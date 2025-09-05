@@ -19,7 +19,6 @@ build:
 
 # Start the sandbox container
 start:
-    @echo "Starting sandbox container..."
     podman run -d \
         --name {{image_name}}-container \
         --user {{user_id}}:{{group_id}} \
@@ -36,8 +35,13 @@ start:
         --volume {{current_dir}}:/workspace:Z \
         {{image_name}} \
         sleep infinity
-    @echo "Sandbox container started: {{image_name}}-container"
 
 # Connect to the running container with shell access
 shell:
     podman exec -it {{image_name}}-container /bin/bash
+
+stop:
+    podman stop {{image_name}}-container
+
+remove:
+    podman rm {{image_name}}-container
