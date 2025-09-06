@@ -27,7 +27,6 @@ start:
         --security-opt=no-new-privileges \
         --memory=2g \
         --cpus=2 \
-        --read-only \
         --tmpfs /tmp:rw,noexec,nosuid,size=100m \
         --tmpfs /var/tmp:rw,noexec,nosuid,size=100m \
         --tmpfs /home/mcmoodoo:rw,size=200m \
