@@ -10,13 +10,14 @@ RUN pacman -Syu --noconfirm && \
         vim \
         jq \
         tree && \
-    pacman -S --noconfirm --needed rustup && rustup default stable && \
+    pacman -S --noconfirm --needed rustup && \
+    rustup default stable && \
+    rustup component add cargo rustfmt clippy && \
     pacman -Scc --noconfirm
 
-RUN mkdir -p /home/mcmoodoo/ && \
-    touch /home/mcmoodoo/.bashrc && \
-    echo 'alias ll="ls -al"' >> /home/mcmoodoo/.bashrc && \
-    chmod -R 777 /home/mcmoodoo
+ENV RUSTUP_HOME=/usr/local/rustup
+ENV CARGO_HOME=/usr/local/cargo
+ENV PATH=/usr/local/cargo/bin:$PATH
 
 RUN mkdir -p /workspace && \
     chmod 777 /workspace
