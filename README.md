@@ -4,16 +4,23 @@
 
 ```mermaid
 sequenceDiagram
-    participant GPG as ~/.gnupg
-    participant Keys as keys/
-    participant S3
+    participant GPG as 🔐 ~/.gnupg
+    participant Keys as 📁 gpg-vault/keys/
+    participant S3 as ☁️ S3 Bucket
+
+    rect rgb(200, 255, 200)
+        Note over GPG,S3: 📤 Backup
+        GPG->>+Keys: 🔑 export keys
+        Keys->>Keys: 🔒 age encrypt
+        Keys->>-S3: ⬆️ upload .age
+    end
     
-    GPG->>Keys: export
-    Keys->>Keys: encrypt
-    Keys->>S3: upload
-    S3->>Keys: download
-    Keys->>Keys: decrypt
-    Keys->>GPG: import
+    rect rgb(200, 220, 255)
+        Note over GPG,S3: 📥 Restore
+        S3->>+Keys: ⬇️ download .age
+        Keys->>Keys: 🔓 age decrypt
+        Keys->>-GPG: 🔑 import keys
+    end
 ```
 
 1. Export GPG keys from `~/.gnupg` → `keys/private-keys.asc`
