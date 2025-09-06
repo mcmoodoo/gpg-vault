@@ -3,13 +3,17 @@
 ## Flow
 
 ```mermaid
-graph LR
-    A[~/.gnupg] -->|export| B[keys/private-keys.asc]
-    B -->|age encrypt| C[keys/private-keys.asc.age]
-    C -->|upload| D[S3 Bucket]
-    D -->|download| E[keys/private-keys.asc.age]
-    E -->|age decrypt| F[keys/private-keys.asc]
-    F -->|import| G[~/.gnupg]
+sequenceDiagram
+    participant GPG as ~/.gnupg
+    participant Keys as keys/
+    participant S3
+    
+    GPG->>Keys: export
+    Keys->>Keys: encrypt
+    Keys->>S3: upload
+    S3->>Keys: download
+    Keys->>Keys: decrypt
+    Keys->>GPG: import
 ```
 
 1. Export GPG keys from `~/.gnupg` → `keys/private-keys.asc`
