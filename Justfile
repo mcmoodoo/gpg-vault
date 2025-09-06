@@ -1,5 +1,7 @@
 #!/usr/bin/env just
 
+BUCKET_NAME := "all-my-files"
+
 # Default recipe - show available commands
 default:
     @just --list
@@ -27,4 +29,4 @@ decrypt file="keys/private-keys.asc.age":
     @echo "Decrypted to $(echo {{file}} | sed 's/\.age$//')"
 
 drop-in-bucket file="keys/private-keys.asc.age":
-    aws s3 cp {{file}} s3://all-my-files
+    aws s3 cp {{file}} s3://{{BUCKET_NAME}}
