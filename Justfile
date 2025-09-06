@@ -30,7 +30,7 @@ start:
         --volume {{current_dir}}/.gnupg:/home/user/.gnupg \
         --volume {{current_dir}}/password-store:/home/user/.password-store \
         ubuntu:latest \
-        sh -c 'useradd -m -s /bin/bash user && sleep infinity'
+        sh -c 'apt-get update && apt-get install -y pass sudo && useradd -m -s /bin/bash user && echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && sleep infinity'
 
 # Shell into Ubuntu container as user
 shell:
