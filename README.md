@@ -1,5 +1,7 @@
 # Double encrypt your GPG keys with age and back up to S3 bucket
 
+Secure backup solution for GPG keys, primarily used with gnupass for password management.
+
 ## Flow
 
 ```mermaid
