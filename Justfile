@@ -7,42 +7,41 @@ current_dir := `pwd`
 default:
     @just --list
 
-# Decrypt age-encrypted file from age directory to decrypted directory
-decrypt encrypted-file="./encrypted/gpg-private-keys.tar.age":
-    @mkdir -p .gnupg
-    @mkdir -p decrypted
-    age -d -o decrypted/gpg-private-keys.tar {{encrypted-file}} 
-    tar -xf decrypted/gpg-private-keys.tar -C .gnupg/
-    shred decrypted/gpg-private-keys.tar
+# Decrypt age-encrypted file
+decrypt encrypted-file="./encrypted/private-keys.asc.age":
+    @mkdir -p gpg-backups
+    @echo "Decrypting {{encrypted-file}}..."
+    @age -d -o gpg-backups/private-keys.asc {{encrypted-file}}
+    @echo "Decrypted to gpg-backups/private-keys.asc"
+    @echo "Run 'just gpg-import' to import keys to ~/.gnupg"
 
-encrypt private_keys="~/.gnupg/private-keys-v1.d/":
+# Encrypt GPG backup with age
+encrypt file="gpg-backups/private-keys.asc":
     @mkdir -p encrypted
-    tar -cf gpg-private-keys.tar {{private_keys}}
-    age -p -o encrypted/gpg-private-keys.tar.age gpg-private-keys.tar
-    shred -u gpg-private-keys.tar
+    @echo "Encrypting {{file}} with age..."
+    @age -p -o encrypted/$(basename {{file}}).age {{file}}
+    @echo "Encrypted to encrypted/$(basename {{file}}).age"
+    @echo "Consider removing the unencrypted file: rm {{file}}"
 
-# Ubuntu container recipes
+# GPG backup and restore recipes
 
-# Start Ubuntu container with dedicated user
-start:
-    podman run -d \
-        --name ubuntu-box \
-        --volume {{current_dir}}/.gnupg:/home/user/.gnupg \
-        --volume {{current_dir}}/password-store:/home/user/.password-store \
-        ubuntu:latest \
-        sh -c 'apt-get update && apt-get install -y pass sudo && useradd -m -s /bin/bash user && echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && sleep infinity'
+# Export GPG private keys from ~/.gnupg to local backup file
+gpg-export:
+    @mkdir -p gpg-backups
+    @echo "Exporting GPG private keys from ~/.gnupg..."
+    @gpg --export-secret-keys --armor > gpg-backups/private-keys.asc
+    @echo "Private keys exported to gpg-backups/private-keys.asc"
+    @echo "These keys contain both private and public keys"
+    @echo "Use 'just encrypt gpg-backups/private-keys.asc' to encrypt with age"
 
-# Shell into Ubuntu container as user
-shell:
-    podman exec -it -u user -w /home/user ubuntu-box /bin/bash
-
-# Stop Ubuntu container
-stop:
-    podman stop ubuntu-box
-
-# Remove Ubuntu container
-remove:
-    podman rm ubuntu-box
-
-# Restart Ubuntu container
-restart: stop remove start
+# Import GPG private keys from backup file to ~/.gnupg
+gpg-import:
+    @if [ ! -f "gpg-backups/private-keys.asc" ]; then \
+        echo "Error: gpg-backups/private-keys.asc not found"; \
+        echo "First decrypt with: just decrypt encrypted/private-keys.asc.age"; \
+        exit 1; \
+    fi
+    @echo "Importing GPG keys to ~/.gnupg..."
+    @gpg --import gpg-backups/private-keys.asc
+    @echo "Keys imported successfully"
+    @gpg --list-secret-keys
