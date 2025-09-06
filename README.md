@@ -1,10 +1,4 @@
-# GPG Backup
-
-Encrypt your GPG keys with age and back up to S3 bucket
-
-## For
-
-Doubly encrypt your GPG keys and backup to S3 bucket
+# Double encrypt your GPG keys with age and back up to S3 bucket
 
 ## Flow
 
