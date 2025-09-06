@@ -9,18 +9,14 @@ RUN pacman -Syu --noconfirm && \
         curl \
         vim \
         jq \
+        pass \
         tree && \
-    pacman -S --noconfirm --needed rustup && \
-    rustup default stable && \
-    rustup component add cargo rustfmt clippy && \
     pacman -Scc --noconfirm
 
-ENV RUSTUP_HOME=/usr/local/rustup
-ENV CARGO_HOME=/usr/local/cargo
-ENV PATH=/usr/local/cargo/bin:$PATH
-
 RUN mkdir -p /workspace && \
-    chmod 777 /workspace
+    chmod 777 /workspace && \
+    echo 'alias ll="ls -al"' >> /etc/bash.bashrc && \
+    echo 'set -o vi' >> /etc/bash.bashrc
 
 WORKDIR /workspace
 

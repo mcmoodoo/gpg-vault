@@ -23,7 +23,6 @@ start:
         --name {{image_name}}-container \
         --userns=keep-id \
         --env HOME=/home/mcmoodoo \
-        --network=none \
         --cap-drop=ALL \
         --security-opt=no-new-privileges \
         --memory=2g \
@@ -33,6 +32,7 @@ start:
         --tmpfs /var/tmp:rw,noexec,nosuid,size=100m \
         --tmpfs /home/mcmoodoo:rw,size=200m \
         --volume {{current_dir}}:/workspace \
+        --volume {{current_dir}}/password_store:/home/mcmoodoo/.password-store:ro \
         {{image_name}} \
         sleep infinity
 
