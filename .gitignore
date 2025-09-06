@@ -3,5 +3,5 @@
 /encrypted/*
 /*.tar
 .gnupg
-/password_store/*
+/password-store/*
 .bash_history
