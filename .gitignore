@@ -3,3 +3,4 @@
 /encrypted/*
 /*.tar
 .gnupg
+/password_store/*
