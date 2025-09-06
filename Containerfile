@@ -13,19 +13,14 @@ RUN pacman -Syu --noconfirm && \
     pacman -S --noconfirm --needed rustup && rustup default stable && \
     pacman -Scc --noconfirm
 
-RUN mkdir -p /home/claudeuser/ && \
-    touch /home/claudeuser/.bashrc && \
-    echo 'alias ll="ls -al"' >> /home/claudeuser/.bashrc
-
-RUN groupadd -g ${GROUP_ID} claudeuser && \
-    useradd -u ${USER_ID} -g ${GROUP_ID} -m -s /bin/bash claudeuser && \
-    echo 'claudeuser ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN mkdir -p /home/mcmoodoo/ && \
+    touch /home/mcmoodoo/.bashrc && \
+    echo 'alias ll="ls -al"' >> /home/mcmoodoo/.bashrc && \
+    chmod -R 777 /home/mcmoodoo
 
 RUN mkdir -p /workspace && \
-    chown ${USER_ID}:${GROUP_ID} /workspace
+    chmod 777 /workspace
 
 WORKDIR /workspace
-
-USER claudeuser
 
 CMD ["/bin/bash"]

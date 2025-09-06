@@ -4,3 +4,4 @@
 /*.tar
 .gnupg
 /password_store/*
+.bash_history

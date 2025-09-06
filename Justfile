@@ -30,8 +30,8 @@ start:
         --read-only \
         --tmpfs /tmp:rw,noexec,nosuid,size=100m \
         --tmpfs /var/tmp:rw,noexec,nosuid,size=100m \
-        --tmpfs /home/claudeuser/.cache:rw,size=100m \
-        --tmpfs /home/claudeuser/.npm:rw,size=100m \
+        --tmpfs /home/mcmoodoo/.cache:rw,size=100m \
+        --tmpfs /home/mcmoodoo/.npm:rw,size=100m \
         --volume {{current_dir}}:/workspace \
         {{image_name}} \
         sleep infinity
