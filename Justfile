@@ -21,7 +21,7 @@ build:
 start:
     podman run -d \
         --name {{image_name}}-container \
-        --user {{user_id}}:{{group_id}} \
+        --userns=keep-id \
         --network=none \
         --cap-drop=ALL \
         --security-opt=no-new-privileges \
@@ -32,7 +32,7 @@ start:
         --tmpfs /var/tmp:rw,noexec,nosuid,size=100m \
         --tmpfs /home/claudeuser/.cache:rw,size=100m \
         --tmpfs /home/claudeuser/.npm:rw,size=100m \
-        --volume {{current_dir}}:/workspace:Z \
+        --volume {{current_dir}}:/workspace \
         {{image_name}} \
         sleep infinity
 
