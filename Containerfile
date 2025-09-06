@@ -10,7 +10,7 @@ RUN pacman -Syu --noconfirm && \
         vim \
         jq \
         tree && \
-    pacman -S --needed rustup && rustup default stable && \
+    pacman -S --noconfirm --needed rustup && rustup default stable && \
     pacman -Scc --noconfirm
 
 RUN mkdir -p /home/claudeuser/ && \
