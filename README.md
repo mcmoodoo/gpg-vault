@@ -3,19 +3,20 @@
 ## Flow
 
 ```mermaid
+%%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#fff', 'primaryBorderColor':'#7C0000', 'lineColor':'#F8B229', 'secondaryColor':'#006100', 'tertiaryColor':'#1a1a2e', 'background':'#0f0f0f', 'mainBkg':'#1f2937', 'secondBkg':'#006100', 'tertiaryBkg':'#1a1a2e', 'textColor':'#fff', 'labelTextColor':'#fff', 'noteTextColor':'#fff', 'actorTextColor':'#fff', 'actorLineColor':'#fff' }}}%%
 sequenceDiagram
     participant GPG as 🔐 ~/.gnupg
     participant Keys as 📁 gpg-vault/keys/
     participant S3 as ☁️ S3 Bucket
 
-    rect rgb(200, 255, 200)
+    rect rgb(34, 139, 34)
         Note over GPG,S3: 📤 Backup
         GPG->>+Keys: 🔑 export keys
         Keys->>Keys: 🔒 age encrypt
         Keys->>-S3: ⬆️ upload .age
     end
     
-    rect rgb(200, 220, 255)
+    rect rgb(65, 105, 225)
         Note over GPG,S3: 📥 Restore
         S3->>+Keys: ⬇️ download .age
         Keys->>Keys: 🔓 age decrypt
