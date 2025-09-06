@@ -25,3 +25,6 @@ encrypt file="keys/private-keys.asc":
 decrypt file="keys/private-keys.asc.age":
     @age -d -o $(echo {{file}} | sed 's/\.age$//') {{file}}
     @echo "Decrypted to $(echo {{file}} | sed 's/\.age$//')"
+
+drop-in-bucket file="keys/private-keys.asc.age":
+    aws s3 cp {{file}} s3://all-my-files
