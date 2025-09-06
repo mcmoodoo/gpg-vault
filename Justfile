@@ -23,5 +23,5 @@ encrypt file="keys/private-keys.asc":
 
 # Decrypt file with age
 decrypt file="keys/private-keys.asc.age":
-    @age -d -o ${file%.age} {{file}}
-    @echo "Decrypted to ${file%.age}"
+    @age -d -o $(echo {{file}} | sed 's/\.age$//') {{file}}
+    @echo "Decrypted to $(echo {{file}} | sed 's/\.age$//')"
