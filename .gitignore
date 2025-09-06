@@ -1,7 +1,1 @@
-/age/*
-/decrypted/*
-/encrypted/*
-/*.tar
-.gnupg
-/password-store/*
-/gpg-backups
+/keys
