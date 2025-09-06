@@ -45,3 +45,17 @@ stop:
 
 remove:
     podman rm {{image_name}}-container
+
+# Decrypt age-encrypted file from age directory to decrypted directory
+decrypt encrypted-file="./encrypted/gpg-private-keys.tar.age":
+    @mkdir -p .gnupg
+    @mkdir -p decrypted
+    age -d -o decrypted/gpg-private-keys.tar {{encrypted-file}} 
+    tar -xf decrypted/gpg-private-keys.tar -C .gnupg/
+    shred decrypted/gpg-private-keys.tar
+
+encrypt private_keys="~/.gnupg/private-keys-v1.d/":
+    @mkdir -p encrypted
+    tar -cf gpg-private-keys.tar {{private_keys}}
+    age -p -o encrypted/gpg-private-keys.tar.age gpg-private-keys.tar
+    shred -u gpg-private-keys.tar
