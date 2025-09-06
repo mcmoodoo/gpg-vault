@@ -22,6 +22,7 @@ start:
     podman run -d \
         --name {{image_name}}-container \
         --userns=keep-id \
+        --env HOME=/home/mcmoodoo \
         --network=none \
         --cap-drop=ALL \
         --security-opt=no-new-privileges \
