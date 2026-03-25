@@ -30,3 +30,6 @@ decrypt file="keys/private-keys.asc.age":
 
 drop-in-bucket file="keys/private-keys.asc.age":
     aws s3 cp {{file}} s3://{{BUCKET_NAME}}
+
+get-from-bucket file ="private-keys.asc.age":
+    aws s3 cp s3://{{BUCKET_NAME}}/{{file}} keys/{{file}}
